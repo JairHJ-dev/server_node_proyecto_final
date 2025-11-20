@@ -57,7 +57,19 @@ app.post('/api/telemetry', async (req, res) => {
 app.get('/api/telemetry', async (req, res) => {
   try {
     const datos = await Telemetry.find().sort({ timestamp: -1 });
-    res.json(datos);
+
+    // Convertir a hora local (Querétaro)
+    const datosFormateados = datos.map(d => ({
+      temp: d.temp,
+      hum: d.hum,
+      timestamp_local: d.timestamp.toLocaleString('es-MX', {
+        timeZone: 'America/Mexico_City'
+      }),
+      timestamp_utc: d.timestamp
+    }));
+
+    res.json(datosFormateados);
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
