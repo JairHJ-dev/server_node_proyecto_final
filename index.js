@@ -91,12 +91,18 @@ app.get('/', (req, res) => {
   res.send(`
     <h1>ESP32 + DHT22 Telemetría</h1>
     <p><strong>Estado:</strong> API funcionando</p>
-    <p><strong>Endpoint POST:</strong> <code>/api/datos</code></p>
-    <p><strong>Total registros:</strong> <span id="count">cargando...</span></p>
+    <p><strong>Endpoint POST:</strong> <code>/api/telemetry</code></p> <p><strong>Endpoint TIME:</strong> <code>/api/update-time</code></p> <p><strong>Total registros:</strong> <span id="count">cargando...</span></p>
     <script>
-      fetch('/api/datos/count').then(r => r.json()).then(d => {
-        document.getElementById('count').textContent = d.total_registros;
-      });
+      // CORREGIDO: ahora apunta a /api/telemetry/count
+      fetch('/api/telemetry/count')
+        .then(r => r.json())
+        .then(d => {
+          document.getElementById('count').textContent = d.total_registros;
+        })
+        .catch(e => {
+          document.getElementById('count').textContent = "Error al cargar";
+          console.error(e);
+        });
     </script>
   `);
 });
