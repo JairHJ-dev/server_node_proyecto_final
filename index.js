@@ -101,6 +101,21 @@ app.get('/', (req, res) => {
   `);
 });
 
+// NUEVA RUTA: Retorna un tiempo aleatorio entre 4s y 60s
+app.get('/api/update-time', (req, res) => {
+  try {
+    const min = 4;
+    const max = 60;
+    // Generar entero aleatorio
+    const seconds = Math.floor(Math.random() * (max - min + 1)) + min;
+    
+    console.log(`Solicitud de tiempo recibida. Respondiendo: ${seconds}s`);
+    res.json({ seconds: seconds });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
